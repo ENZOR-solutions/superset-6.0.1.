@@ -29,18 +29,19 @@ from flask_caching.backends.filesystemcache import FileSystemCache
 
 logger = logging.getLogger()
 
-DATABASE_DIALECT = os.getenv("DATABASE_DIALECT")
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
-DATABASE_HOST = os.getenv("DATABASE_HOST")
-DATABASE_PORT = os.getenv("DATABASE_PORT")
-DATABASE_DB = os.getenv("DATABASE_DB")
+DATABASE_DIALECT = os.getenv("DATABASE_DIALECT", "postgresql")
+DATABASE_USER = os.getenv("DATABASE_USER", "superset")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD", "superset")
+DATABASE_HOST = os.getenv("DATABASE_HOST", "db")
+DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
+DATABASE_DB = os.getenv("DATABASE_DB", "superset")
 
-EXAMPLES_USER = os.getenv("EXAMPLES_USER")
-EXAMPLES_PASSWORD = os.getenv("EXAMPLES_PASSWORD")
-EXAMPLES_HOST = os.getenv("EXAMPLES_HOST")
-EXAMPLES_PORT = os.getenv("EXAMPLES_PORT")
-EXAMPLES_DB = os.getenv("EXAMPLES_DB")
+
+EXAMPLES_USER = os.getenv("EXAMPLES_USER", "examples")
+EXAMPLES_PASSWORD = os.getenv("EXAMPLES_PASSWORD", "examples")
+EXAMPLES_HOST = os.getenv("EXAMPLES_HOST", "db")
+EXAMPLES_PORT = os.getenv("EXAMPLES_PORT", "5432")
+EXAMPLES_DB = os.getenv("EXAMPLES_DB", "examples")
 
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = (
@@ -48,6 +49,10 @@ SQLALCHEMY_DATABASE_URI = (
     f"{DATABASE_USER}:{DATABASE_PASSWORD}@"
     f"{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_DB}"
 )
+DEBUG = False
+FLASK_DEBUG = False
+SUPERSET_ENV = "production"
+SUPERSET_LOAD_EXAMPLES = False
 
 # Use environment variable if set, otherwise construct from components
 # This MUST take precedence over any other configuration

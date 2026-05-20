@@ -114,7 +114,6 @@ PACKAGE_JSON_FILE = str(files("superset") / "static/assets/package.json")
 #     "type": "image/png"
 #     "rel": "icon"
 # },
-FAVICONS = [{"href": "/static/assets/images/favicon.png"}]
 PDF_COMPRESSION_LEVEL: Literal["NONE", "FAST", "MEDIUM", "SLOW"] = "MEDIUM"
 
 
@@ -353,10 +352,14 @@ AUTH_RATE_LIMIT = "5 per second"
 # GLOBALS FOR APP Builder
 # ------------------------------
 # Uncomment to setup Your App name
-APP_NAME = "Superset"
 
-# Specify the App icon
-APP_ICON = "/static/assets/images/superset-logo-horiz.png"
+APP_NAME = "Enzor BI"
+APP_ICON = "/static/assets/images/enzor_logo.png"
+FAVICONS = [
+    {
+        "href": "/static/assets/images/favicon.ico",
+    }
+]
 
 # Specify where clicking the logo would take the user'
 # Default value of None will take you to '/superset/welcome'
@@ -421,25 +424,7 @@ BABEL_DEFAULT_FOLDER = "superset/translations"
 # The allowed translation for your app
 LANGUAGES = {
     "en": {"flag": "us", "name": "English"},
-    "es": {"flag": "es", "name": "Spanish"},
-    "it": {"flag": "it", "name": "Italian"},
-    "fr": {"flag": "fr", "name": "French"},
-    "zh": {"flag": "cn", "name": "Chinese"},
-    "zh_TW": {"flag": "tw", "name": "Traditional Chinese"},
-    "ja": {"flag": "jp", "name": "Japanese"},
-    "de": {"flag": "de", "name": "German"},
-    "pl": {"flag": "pl", "name": "Polish"},
-    "pt": {"flag": "pt", "name": "Portuguese"},
-    "pt_BR": {"flag": "br", "name": "Brazilian Portuguese"},
-    "ru": {"flag": "ru", "name": "Russian"},
-    "ko": {"flag": "kr", "name": "Korean"},
-    "cs": {"flag": "cz", "name": "Czech"},
-    "sk": {"flag": "sk", "name": "Slovak"},
     "sl": {"flag": "si", "name": "Slovenian"},
-    "lv": {"flag": "lv", "name": "Latvian"},
-    "nl": {"flag": "nl", "name": "Dutch"},
-    "uk": {"flag": "ua", "name": "Ukrainian"},
-    "mi": {"flag": "nz", "name": "Māori"},
 }
 # Turning off i18n by default as translation in most languages are
 # incomplete and not well maintained.
@@ -560,7 +545,7 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     "CSV_UPLOAD_PYARROW_ENGINE": False,
     # Allow metrics and columns to be grouped into folders in the chart builder
     # @lifecycle: development
-    "DATASET_FOLDERS": False,
+    "DATASET_FOLDERS": True,
     # Enable support for date range timeshifts (e.g., "2015-01-03 : 2015-01-04")
     # in addition to relative timeshifts (e.g., "1 day ago")
     # @lifecycle: development
@@ -575,13 +560,13 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     "GRANULAR_EXPORT_CONTROLS": False,
     # Enable semantic layers and show semantic views alongside datasets
     # @lifecycle: development
-    "SEMANTIC_LAYERS": False,
+    "SEMANTIC_LAYERS": True,
     # Enables advanced data type support
     # @lifecycle: development
     "ENABLE_ADVANCED_DATA_TYPES": False,
     # Enable Superset extensions for custom functionality without modifying core
     # @lifecycle: development
-    "ENABLE_EXTENSIONS": False,
+    "ENABLE_EXTENSIONS": True,
     # Enable Matrixify feature for matrix-style chart layouts
     # @lifecycle: development
     "MATRIXIFY": False,
@@ -606,11 +591,11 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     # -----------------------------------------------------------------
     # Enables filter functionality in Alerts and Reports
     # @lifecycle: testing
-    "ALERT_REPORTS_FILTER": False,
+    "ALERT_REPORTS_FILTER": True,
     # Enables Alerts and Reports functionality
     # @lifecycle: testing
     # @docs: https://superset.apache.org/docs/configuration/alerts-reports
-    "ALERT_REPORTS": False,
+    "ALERT_REPORTS": True,
     # Enables Slack V2 integration for Alerts and Reports
     # @lifecycle: testing
     "ALERT_REPORT_SLACK_V2": False,
@@ -719,7 +704,7 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     # @lifecycle: stable
     # @category: runtime_config
     # @docs: https://superset.apache.org/docs/using-superset/creating-your-first-dashboard
-    "DASHBOARD_RBAC": False,
+    "DASHBOARD_RBAC": True,
     # Supports simultaneous data and dashboard virtualization for backend performance
     # @lifecycle: stable
     # @category: runtime_config
@@ -1404,6 +1389,11 @@ class CeleryConfig:  # pylint: disable=too-few-public-methods
             "task": "reports.prune_log",
             "schedule": crontab(minute=0, hour=0),
         },
+        "cache.clear.daily": {
+            "task": "superset.tasks.cache.clear_cache",
+            "schedule": crontab(minute=0, hour=0),
+        },
+
         # Uncomment to enable pruning of the query table
         # "prune_query": {
         #     "task": "prune_query",
@@ -2335,7 +2325,7 @@ GLOBAL_ASYNC_QUERIES_CACHE_BACKEND = {
     "CACHE_REDIS_USER": "",
     "CACHE_REDIS_PASSWORD": "",
     "CACHE_REDIS_DB": 0,
-    "CACHE_DEFAULT_TIMEOUT": 300,
+    "CACHE_DEFAULT_TIMEOUT": 86400,
     "CACHE_REDIS_SENTINELS": [("localhost", 26379)],
     "CACHE_REDIS_SENTINEL_MASTER": "mymaster",
     "CACHE_REDIS_SENTINEL_PASSWORD": None,
