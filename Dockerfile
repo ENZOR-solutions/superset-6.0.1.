@@ -232,6 +232,7 @@ RUN --mount=type=cache,target=${SUPERSET_HOME}/.cache/uv \
 # Install the superset package
 RUN --mount=type=cache,target=${SUPERSET_HOME}/.cache/uv \
     uv pip install -e .
+RUN uv pip install psycopg2-binary
 RUN python -m compileall /app/superset
 
 USER superset
