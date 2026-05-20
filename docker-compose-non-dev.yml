@@ -29,11 +29,7 @@ x-superset-volumes:
   - ./docker:/app/docker
   - superset_home:/app/superset_home
 
-x-common-build: &common-build
-  context: .
-  target: dev
-  cache_from:
-    - apache/superset-cache:3.10-slim-trixie
+x-superset-image: &common-build superset_enz_amd_601:latest
 
 services:
   redis:
