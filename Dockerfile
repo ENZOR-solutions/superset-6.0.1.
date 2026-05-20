@@ -261,7 +261,7 @@ RUN --mount=type=cache,target=${SUPERSET_HOME}/.cache/uv \
 RUN --mount=type=cache,target=${SUPERSET_HOME}/.cache/uv \
     uv pip install -e .
 
-RUN uv pip install .[postgres]
+RUN uv pip install .[postgres] psycopg2-binary
 RUN python -m compileall /app/superset
 
 USER superset
@@ -271,7 +271,7 @@ USER superset
 ######################################################################
 FROM lean AS ci
 USER root
-RUN uv pip install .[postgres,duckdb]
+RUN uv pip install .[postgres,duckdb,psycopg2]
 USER superset
 CMD ["/app/docker/entrypoints/docker-ci.sh"]
 
