@@ -29,7 +29,7 @@ x-superset-volumes:
   - ./docker:/app/docker
   - superset_home:/app/superset_home
 
-x-superset-image: &common-build superset_enz_amd_601:latest
+x-superset-image: &superset-image superset_enz_amd_601:latest
 
 services:
   redis:
@@ -58,8 +58,7 @@ services:
         required: true
       - path: docker/.env-local # optional override
         required: false
-    build:
-      <<: *common-build
+    image: *superset-image
     container_name: superset_app
     command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
     user: "root"
@@ -73,8 +72,7 @@ services:
 
   superset-init:
     container_name: superset_init
-    build:
-      <<: *common-build
+    image: *superset-image
     command: ["/app/docker/docker-init.sh"]
     env_file:
       - path: docker/.env # default
@@ -92,8 +90,7 @@ services:
       disable: true
 
   superset-worker:
-    build:
-      <<: *common-build
+    image: *superset-image
     container_name: superset_worker
     command: ["/app/docker/docker-bootstrap.sh", "worker"]
     env_file:
@@ -115,8 +112,7 @@ services:
         ]
 
   superset-worker-beat:
-    build:
-      <<: *common-build
+    image: *superset-image
     container_name: superset_worker_beat
     command: ["/app/docker/docker-bootstrap.sh", "beat"]
     env_file:
